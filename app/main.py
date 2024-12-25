@@ -1,7 +1,10 @@
+"""main module"""
+# FastAPI
 from fastapi import FastAPI
+# Routers
+from routers.users import router as user_router
+
 
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+app.include_router(user_router)

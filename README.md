@@ -53,14 +53,19 @@ Este es un proyecto web desarrollado con FastAPI, con el proposito de integrarse
 .
 ├── app
 │   ├── main.py
-│   ├── routers
+│   ├── config
+│   │   └── db.py
+│   ├── crud
 │   │   └── user.py
 │   ├── models
+│   │   └── user.py
+│   ├── routers
 │   │   └── user.py
 │   └── schemas
 │       └── user.py
 ├── tests
 │   └── test_user.py
+├── .gitignore
 ├── requirements.txt
 └── README.md
 ```
