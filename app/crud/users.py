@@ -3,10 +3,10 @@
 from sqlalchemy.orm import Session
 # Modules
 from models.users import User
-from schemas.users import UserCreateSchema
+from schemas.users import UserBaseSchema
 
 
-def select_user(db: Session, user_id: int) -> User:
+def select_user(db: Session, user_id: int) -> User | None:
     """Obtiene un usuario en base de datos
 
     Args:
@@ -31,12 +31,12 @@ def select_users(db: Session, skip: int = 0, limit: int = 10)  -> list[User]:
     """
     return db.query(User).offset(skip).limit(limit).all()
 
-def insert_user(db: Session, user: UserCreateSchema) -> User:
+def insert_user(db: Session, user: UserBaseSchema) -> User | None:
     """Crea un usuario en base de datos
 
     Args:
         db (Session): conexion a base de datos
-        user (UserCreateSchema): esquema del usuario a insertar
+        user (UserBaseSchema): esquema del usuario a insertar
 
     Returns:
         User: objeto de usuario insertado

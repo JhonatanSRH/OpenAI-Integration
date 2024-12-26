@@ -1,7 +1,7 @@
 """Users schemas"""
 # Pydantic
-from pydantic import BaseModel
 from typing import Literal
+from pydantic import BaseModel
 
 
 class UserBaseSchema(BaseModel):
@@ -17,10 +17,6 @@ class UserBaseSchema(BaseModel):
                 "role": "user"
             }
         }
-
-class UserCreateSchema(UserBaseSchema):
-    """User create schema class"""
-    pass
 
 class UserSchema(UserBaseSchema):
     """User schema class"""

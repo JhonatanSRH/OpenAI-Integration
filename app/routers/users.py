@@ -2,31 +2,35 @@
 # FastAPI
 from fastapi import APIRouter, HTTPException, Depends
 # Modules
-from schemas.users import UserSchema, UserCreateSchema
+from models.users import User
+from schemas.users import UserSchema, UserBaseSchema
 import crud.users as crud
 from config.db import get_db_session
 
 
 router = APIRouter()
 
-@router.post("/init_user/", response_model=UserSchema)
-def create_user(user: UserCreateSchema, 
-                session = Depends(get_db_session)) -> UserSchema:
+@router.post("/init_user/")
+def create_user(user: UserBaseSchema,
+                session = Depends(get_db_session)) -> dict:
     """Crea un usuario
 
     Args:
-        user (UserSchema): Esquema de usuario
+        user (UserBaseSchema): Esquema de usuario para su creacion
         session (AsyncSession, optional): sesion de base de datos. 
             Por defecto Depends(get_db_session).
 
     Returns:
         UserSchema: objeto esquema de usuario
     """
-    return crud.insert_user(session, user)
+    user = crud.insert_user(session, user)
+    if user is None:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    return {"message": "Usuario creado correctamente"}
 
 @router.get("/users/{user_id}", response_model=UserSchema)
-def retrieve_user(user_id: int, 
-                  session = Depends(get_db_session)) -> UserSchema:
+def retrieve_user(user_id: int,
+                  session = Depends(get_db_session)) -> User | None:
     """Obtiene un usuario
 
     Args:
@@ -43,9 +47,9 @@ def retrieve_user(user_id: int,
     return user
 
 @router.get("/users/", response_model=list[UserSchema])
-def retrieve_user(skip: int = 0, 
-                  limit: int = 10, 
-                  session = Depends(get_db_session)) -> list[UserSchema]:
+def list_user(skip: int = 0,
+              limit: int = 10,
+              session = Depends(get_db_session)) -> list[User]:
     """Obtiene un usuario
 
     Args:
