@@ -9,6 +9,6 @@ class Message(SQLModel, table=True):
     __tablename__ = 'messages'
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    user_id: Optional[int] = Field(default=None, foreign_key='user_id')
+    user_id: Optional[int] = Field(default=None, foreign_key='users.id')
     question: str
     response: str

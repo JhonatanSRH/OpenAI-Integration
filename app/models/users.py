@@ -9,5 +9,5 @@ class User(SQLModel, table=True):
     __tablename__ = 'users'
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    username: str
+    username: str = Field(unique=True, index=True)
     role: str

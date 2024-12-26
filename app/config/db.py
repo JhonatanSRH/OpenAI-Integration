@@ -1,6 +1,6 @@
 """db configuration"""
 # SQLAlchemy
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 # Settings
@@ -24,3 +24,18 @@ def get_db_session() -> object:
         yield db
     finally:
         db.close()
+
+def check_db_status(session: object) -> bool:
+    """Comprueba el estado de la base de datos
+
+    Args:
+        session (object): objeto tipo sesión
+
+    Returns:
+        bool: determina si la conexion a la base de datos es exitosa o no
+    """
+    try:
+        result = session.execute(select(1))
+        return result.scalar_one_or_none() is not None
+    except Exception:
+        return False
