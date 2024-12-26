@@ -2,8 +2,8 @@
 # SQLAlchemy
 from sqlalchemy.orm import Session
 # Modules
-from models.users import User
-from schemas.users import UserBaseSchema
+from app.models.users import User
+from app.schemas.users import UserBaseSchema
 
 
 def select_user(db: Session, user_id: int) -> User | None:

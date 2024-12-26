@@ -1,0 +1,44 @@
+@startuml
+actor Cliente
+Cliente -> FastAPI: POST /users/init_user/
+FastAPI -> Servicio: Validar Datos
+Servicio --> FastAPI: Error de validacion
+FastAPI --> Cliente: 422 Error en solicitud
+Servicio -> BaseDatos: INSERT INTO users
+BaseDatos -> Servicio: Retorna mensaje de exito
+Servicio -> FastAPI: Usuario Creado
+FastAPI -> Cliente: 200 Usuario creado
+
+Cliente -> FastAPI: POST /messages/ask/
+FastAPI -> Servicio: Validar Datos
+Servicio --> FastAPI: Error de validacion
+FastAPI --> Cliente: 422 Error en solicitud
+Servicio ->OpenAI: Consumir servicio
+OpenAI ->Servicio: Retornar respuesta
+Servicio --> FastAPI: Error en servicio
+FastAPI --> Cliente: 400 Error obteniendo respuesta
+Servicio -> BaseDatos: INSERT INTO messages
+BaseDatos -> Servicio: Retorna mensaje
+Servicio -> FastAPI: Mensaje Creado
+FastAPI -> Cliente: 200 Mensaje creado (Datos del mensaje)
+
+Cliente -> FastAPI: GET /messages/history/{username}/
+FastAPI -> Servicio: Validar username
+Servicio --> FastAPI: Error de username
+FastAPI --> Cliente: 400 Usuario no encontrado
+Servicio -> BaseDatos: SELECT messages JOIN users WHERE username = user.username
+BaseDatos -> Servicio: Retorna mensajes
+Servicio --> FastAPI: Mensajes no encontrados
+FastAPI --> Cliente: 404 Mensajes no encontrados
+Servicio -> FastAPI: Mensajes encontrados
+FastAPI -> Cliente: 200 Mensajes encontrados (Lista de mensajes)
+
+Cliente -> FastAPI: GET /services/health/
+FastAPI -> Servicio: Validar servicios
+Servicio -> OpenAI: Consumir servicio
+OpenAI-> Servicio: Retorna respuesta
+Servicio -> BaseDatos: SELECT 1
+BaseDatos -> Servicio: Retorna respuesta
+Servicio --> FastAPI: Respuesta de servicios
+FastAPI -> Cliente: 200 Estado de servicios
+@enduml

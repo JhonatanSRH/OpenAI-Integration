@@ -2,13 +2,13 @@
 # FastAPI
 from fastapi import APIRouter, Depends
 # Modules
-from config.db import get_db_session, check_db_status
-from config.openai import check_openai_status
+from app.config.db import get_db_session, check_db_status
+from app.config.openai import check_openai_status
 
 
 router = APIRouter(prefix="/services")
 
-@router.get("/health")
+@router.get("/health/")
 def health_check(session = Depends(get_db_session)) -> dict:
     """Comprueba el estado de los servicios
 

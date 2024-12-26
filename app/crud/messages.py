@@ -3,9 +3,9 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 # Modules
-from models.users import User
-from models.messages import Message
-from schemas.messages import MessageResponseSchema
+from app.models.users import User
+from app.models.messages import Message
+from app.schemas.messages import MessageResponseSchema
 
 
 def filter_message(db: Session, username: str) -> list[Message]:

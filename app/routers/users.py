@@ -2,10 +2,10 @@
 # FastAPI
 from fastapi import APIRouter, HTTPException, Depends
 # Modules
-from models.users import User
-from schemas.users import UserSchema, UserBaseSchema
-import crud.users as crud
-from config.db import get_db_session
+from app.models.users import User
+from app.schemas.users import UserSchema, UserBaseSchema
+import app.crud.users as crud
+from app.config.db import get_db_session
 
 
 router = APIRouter(prefix="/users")
@@ -25,10 +25,10 @@ def create_user(user_data: UserBaseSchema,
     """
     user = crud.insert_user(session, user_data)
     if user is None:
-        raise HTTPException(status_code=404, detail="El usuario no se pudo insertar")
+        raise HTTPException(status_code=400, detail="El usuario no se pudo insertar")
     return {"message": "Usuario creado correctamente"}
 
-@router.get("/{user_id}", response_model=UserSchema)
+@router.get("/{user_id}/", response_model=UserSchema)
 def retrieve_user(user_id: int,
                   session = Depends(get_db_session)) -> User | None:
     """Obtiene un usuario

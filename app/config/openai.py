@@ -4,7 +4,7 @@ from fastapi import HTTPException
 # OpenAI
 from openai import OpenAI
 # Settings
-from config.settings import settings
+from app.config.settings import settings
 
 
 CONTEXT: str = ("Tú eres un experto en evaluación de riesgos laborales, el cual, " +

@@ -2,11 +2,11 @@
 # FastAPI
 from fastapi import APIRouter, HTTPException, Depends
 # Modules
-from models.messages import Message
-from schemas.messages import MessageBaseSchema, MessageResponseSchema
-import crud.messages as crud
-from config.db import get_db_session
-from config import openai
+from app.models.messages import Message
+from app.schemas.messages import MessageBaseSchema, MessageResponseSchema
+import app.crud.messages as crud
+from app.config.db import get_db_session
+from app.config import openai
 
 
 router = APIRouter(prefix="/messages")
@@ -30,10 +30,10 @@ def send_message(message_data: MessageBaseSchema,
                                         response=openai_response)
     message = crud.insert_message(session, message_res)
     if message is None:
-        raise HTTPException(status_code=404, detail="El mensaje no se pudo enviar")
+        raise HTTPException(status_code=400, detail="El mensaje no se pudo enviar")
     return message
 
-@router.get("/history/{username}", response_model=list[MessageResponseSchema])
+@router.get("/history/{username}/", response_model=list[MessageResponseSchema])
 def filter_messages(username: str,
                     session = Depends(get_db_session)) -> list[Message]:
     """Obtiener una lista de mensajes
