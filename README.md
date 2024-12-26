@@ -19,7 +19,7 @@ Se realizaron dos tablas, relacionadas mediante una llave foranea con el fin de 
 
 1. Clona el repositorio:
     ```bash
-    git clone https://github.com/tu_usuario/api_chatbot.git
+    git clone https://github.com/JhonatanSRH/OpenAI-Integration.git
     ```
 2. Navega al directorio del proyecto:
     ```bash
@@ -87,15 +87,15 @@ Se realizaron dos tablas, relacionadas mediante una llave foranea con el fin de 
 ## Pruebas
 
 Se puede ejecutar todas las pruebas con el comando:
-    ```bash
-    pytest tests/
-    ```
+```bash
+pytest tests/
+```
 O de forma individual:
-    ```bash
-    pytest tests/test_messages.py
-    pytest tests/test_services.py
-    pytest tests/test_users.py
-    ```
+```bash
+pytest tests/test_messages.py
+pytest tests/test_services.py
+pytest tests/test_users.py
+```
 
 ## Diagrama de secuencia
 
