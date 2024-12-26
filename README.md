@@ -23,7 +23,7 @@ Se realizaron dos tablas, relacionadas mediante una llave foranea con el fin de 
     ```
 2. Navega al directorio del proyecto:
     ```bash
-    cd api_chatbot
+    cd OpenAI-Integration
     ```
 3. Crea un entorno virtual:
     ```bash
