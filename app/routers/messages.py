@@ -11,19 +11,12 @@ from app.config import openai
 
 router = APIRouter(prefix="/messages")
 
-@router.post("/ask/", response_model=MessageResponseSchema)
+@router.post("/ask/", 
+             response_model=MessageResponseSchema, 
+             responses={400: {"description": "El mensaje no se pudo enviar"}})
 def send_message(message_data: MessageBaseSchema,
                  session = Depends(get_db_session)) -> Message:
-    """Crea un mensaje y lo envia a OpenAI
-
-    Args:
-        message (MessageBaseSchema): Esquema del mensaje para su creacion
-        session (object, optional): sesion de base de datos. 
-            Por defecto Depends(get_db_session).
-
-    Returns:
-        Message: objeto con datos del mensaje creado
-    """
+    """Crea un mensaje y lo envia a OpenAI"""
     openai_response = openai.send_message(message_data.question)
     message_res = MessageResponseSchema(user_id=message_data.user_id,
                                         question=message_data.question,
@@ -33,20 +26,12 @@ def send_message(message_data: MessageBaseSchema,
         raise HTTPException(status_code=400, detail="El mensaje no se pudo enviar")
     return message
 
-@router.get("/history/{username}/", response_model=list[MessageResponseSchema])
+@router.get("/history/{username}/", 
+            response_model=list[MessageResponseSchema],
+            responses={404: {"description": "Mensajes no encontrados"}})
 def filter_messages(username: str,
                     session = Depends(get_db_session)) -> list[Message]:
-    """Obtiener una lista de mensajes
-
-    Args:
-        skip (int): cantidad de datos a saltar
-        limit (int): limite de datos a obtener
-        session (object, optional): sesion de base de datos. 
-            Por defecto Depends(get_db_session).
-
-    Returns:
-        list: lista de mensajes
-    """
+    """Obtiener una lista de mensajes"""
     messages_list = crud.filter_message(session, username)
     if not messages_list:
         raise HTTPException(status_code=404, detail="Mensajes no encontrados")
@@ -56,16 +41,6 @@ def filter_messages(username: str,
 def list_messages(skip: int = 0,
                   limit: int = 10,
                   session = Depends(get_db_session)) -> list[Message]:
-    """Obtiener una lista de mensajes
-
-    Args:
-        skip (int): cantidad de datos a saltar
-        limit (int): limite de datos a obtener
-        session (object, optional): sesion de base de datos. 
-            Por defecto Depends(get_db_session).
-
-    Returns:
-        list: lista de mensajes
-    """
+    """Obtiener una lista de mensajes"""
     messages_list = crud.select_messages(session, skip, limit)
     return messages_list

@@ -1,6 +1,7 @@
 """Messages test"""
 # FastAPI
 from fastapi.testclient import TestClient
+from unittest.mock import patch
 
 
 def test_health_check(client: TestClient):
@@ -9,9 +10,9 @@ def test_health_check(client: TestClient):
     assert response.status_code == 200
     assert response.json().get("db_status") and response.json().get("openai_status")
 
-def test_bad_health_check(client: TestClient, monkeypatch):
+def test_bad_health_check(client: TestClient):
     """Prueba de mal estado de salud"""
-    monkeypatch.setenv("OPENAI_API_KEY", "invalid_api_key")
-    response = client.get("/services/health/")
-    assert response.status_code == 200
-    assert response.json().get("openai_status") == "Fail"
+    with patch('app.routers.services.check_openai_status', return_value=False):
+        response = client.get("/services/health/")
+        assert response.status_code == 200
+        assert response.json().get("openai_status") == "Fail"

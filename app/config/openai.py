@@ -25,19 +25,17 @@ def send_message(message: str) -> str:
     """
     try:
         completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "developer", "content": CONTEXT},
                 {"role": "user", "content": message}
             ],
-            temperature=0.8,
-            max_tokens=200,
-            top_p=1
+            max_tokens=200
         )
     except Exception as error:
         raise HTTPException(status_code=400,
                             detail=f"Error al enviar mensaje a OpenAI: {error}")
-    return completion.choices[0].message
+    return completion.choices[0].message.content
 
 def check_openai_status() -> bool:
     """Comprueba el estado de OpenAI
@@ -47,7 +45,7 @@ def check_openai_status() -> bool:
     """
     try:
         client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "user", "content": "ping"}
             ],

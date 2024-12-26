@@ -7,7 +7,7 @@ from app.routers.services import router as services_router
 from app.routers.users import router as user_router
 
 
-app = FastAPI(title="Chatbot API", version="0.1.0")
+app = FastAPI(title="API Chatbot", version="0.1.0")
 
 # Routers
 app.include_router(messages_router)

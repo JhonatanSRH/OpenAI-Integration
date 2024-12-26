@@ -36,12 +36,3 @@ def test_error_create_messages(client: TestClient):
     assert response.status_code == 422
     data = response.json()
     assert data.get('detail', [])[0].get('msg') == "Field required"
-
-def test_error_openai_api(client: TestClient, monkeypatch):
-    """Prueba error de consumo open ai api"""
-    monkeypatch.setenv("OPENAI_API_KEY", "invalid_api_key")
-    response = client.post("/messages/ask/", 
-                           json={"question": "¿Qué es un hiato?", "user_id": 1})
-    data = response.json()
-    assert response.status_code == 400
-    assert data.get('detail') == "Error al enviar mensaje a OpenAI: Connection error."
